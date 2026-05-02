@@ -3,7 +3,12 @@
 const express = require("express");
 const cors = require("cors");
 
+// Import routes
+const authRoutes = require("./routes/authRoutes");
+
 const app = express();
+
+// Middleware
 app.use(cors());
 app.use(express.json());
 
@@ -12,7 +17,8 @@ app.get("/", (req, res) => {
     res.send("Backend is running");
 });
 
-// Start server
-app.listen(3000, () => {
-    console.log("Server running on port 3000");
-});
+// Routes
+app.use("/auth", authRoutes);
+
+// Export app (IMPORTANT for server.js & Lambda later)
+module.exports = app;
