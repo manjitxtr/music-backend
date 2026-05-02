@@ -1,10 +1,7 @@
-// Source: AWS SDK docs (PutCommand)
+// Source: AWS SDK docs
 
-const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocumentClient, PutCommand } = require("@aws-sdk/lib-dynamodb");
-
-const client = new DynamoDBClient({ region: "ap-southeast-2" });
-const docClient = DynamoDBDocumentClient.from(client);
+const { PutCommand } = require("@aws-sdk/lib-dynamodb");
+const { docClient } = require("../config/db");
 
 const users = [
     { email: "user1@gmail.com", username: "user1", password: "pass1" },
@@ -19,14 +16,15 @@ const users = [
     { email: "user10@gmail.com", username: "user10", password: "pass10" }
 ];
 
-const seedData = async () => {
+const seedLoginTable = async () => {
     for (const user of users) {
         await docClient.send(new PutCommand({
             TableName: "login",
             Item: user
         }));
     }
-    console.log("Users inserted");
+
+    console.log("Login table seeded");
 };
 
-seedData();
+module.exports = seedLoginTable;

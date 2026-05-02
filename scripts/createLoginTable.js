@@ -1,9 +1,11 @@
 // Source: Adapted from AWS SDK v3 documentation
 
 const { DynamoDBClient, CreateTableCommand } = require("@aws-sdk/client-dynamodb");
+require("dotenv").config();
+
 
 const client = new DynamoDBClient({
-    region: "ap-southeast-2"
+    region: process.env.AWS_REGION
 });
 
 const createTable = async () => {
