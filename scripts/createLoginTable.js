@@ -1,34 +1,42 @@
-// Source: Adapted from AWS SDK v3 documentation
+// Source: AWS SDK docs
 
-const { DynamoDBClient, CreateTableCommand } = require("@aws-sdk/client-dynamodb");
-require("dotenv").config();
+const { CreateTableCommand, DescribeTableCommand } = require("@aws-sdk/client-dynamodb");
+const { client } = require("../config/db");
 
+const waitForTableActive = async (tableName) => {
+    let status = "CREATING";
 
-const client = new DynamoDBClient({
-    region: process.env.AWS_REGION
-});
+    while (status !== "ACTIVE") {
+        const data = await client.send(new DescribeTableCommand({ TableName: tableName }));
+        status = data.Table.TableStatus;
 
-const createTable = async () => {
+        console.log(`Waiting... current status: ${status}`);
+
+        if (status !== "ACTIVE") {
+            await new Promise(resolve => setTimeout(resolve, 3000)); // wait 3 sec
+        }
+    }
+
+    console.log(`${tableName} is ACTIVE`);
+};
+
+const createLoginTable = async () => {
     const params = {
         TableName: "login",
-
         KeySchema: [
-            { AttributeName: "email", KeyType: "HASH" } // Partition key
+            { AttributeName: "email", KeyType: "HASH" }
         ],
-
         AttributeDefinitions: [
             { AttributeName: "email", AttributeType: "S" }
         ],
-
         BillingMode: "PAY_PER_REQUEST"
     };
 
-    try {
-        const data = await client.send(new CreateTableCommand(params));
-        console.log("Login table created:", data);
-    } catch (err) {
-        console.error("Error creating table:", err);
-    }
+    await client.send(new CreateTableCommand(params));
+    console.log("Login table creation started");
+
+    //WAIT HERE
+    await waitForTableActive("login");
 };
 
-createTable();
+module.exports = createLoginTable;
