@@ -1,6 +1,5 @@
 const { GetCommand } = require("@aws-sdk/lib-dynamodb");
-const docClient = require("../config/db");
-
+const { docClient } = require("../config/db");
 const loginUser = async (email, password) => {
     const result = await docClient.send(new GetCommand({
         TableName: "login",
