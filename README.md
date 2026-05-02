@@ -21,6 +21,15 @@ Make sure the following are installed:
 ```bash
 git clone https://github.com/YOUR_USERNAME/music-subscription-backend.git
 cd music-subscription-backend
+```
 
 ## 3. Install Dependencies
+```bash
 npm install
+```
+
+## 4. Running the Backend
+```bash
+node server.js
+```
+
