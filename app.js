@@ -5,6 +5,7 @@ const cors = require("cors");
 
 // Import routes
 const authRoutes = require("./routes/authRoutes");
+const musicRoutes = require("./routes/musicRoutes");
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
 
 // Routes
 app.use("/auth", authRoutes);
+app.use("/music", musicRoutes);
 
 // Export app (IMPORTANT for server.js & Lambda later)
 module.exports = app;
