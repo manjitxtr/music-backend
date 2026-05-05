@@ -3,6 +3,10 @@ const { client } = require("./db");
 
 const createLoginTable = require("../scripts/createLoginTable");
 const seedLoginTable = require("../scripts/seedLoginTable");
+const createMusicTable = require("../scripts/createMusicTable");
+const loadMusicData = require("../scripts/loadMusicData");
+
+
 
 const ensureTableExists = async (tableName, createFn, seedFn) => {
     try {
@@ -23,6 +27,8 @@ const ensureTableExists = async (tableName, createFn, seedFn) => {
 
 const initDB = async () => {
     await ensureTableExists("login", createLoginTable, seedLoginTable);
+    await ensureTableExists("music", createMusicTable, loadMusicData);
+
 };
 
 module.exports = initDB;
