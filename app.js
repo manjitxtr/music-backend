@@ -10,7 +10,10 @@ const musicRoutes = require("./routes/musicRoutes");
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:3001",
+    credentials: true
+}));
 app.use(express.json());
 
 // Test route
